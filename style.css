@@ -1,0 +1,40 @@
+body{
+margin:0
+}
+
+.PDF
+{
+height: 100%;
+width: 100%
+}
+
+.PDFReader
+{
+margin-left:0;
+position: absolute;
+height: 100%;
+width: 49%
+}
+
+.TurtoiseWriter
+{
+margin-right:0;
+float: right;
+heigth : 100%;
+width: 49%
+}
+
+.Saisie
+{
+height : 100%
+}
+
+form
+{
+height : 100%
+}
+
+textarea
+{
+height:100%
+}
