@@ -36,5 +36,11 @@ height : 100%
 
 textarea
 {
-height:100%
+position: absolute;
+height: 98%;
+width: 49%;
+right: 0em;
+margin: 0;
+padding: 0;
+border: 1
 }
