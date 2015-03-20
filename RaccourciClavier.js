@@ -72,16 +72,16 @@ function applyKey (_event_){
 	var intKeyCode = winObj.keyCode;
 	var intAltKey = winObj.altKey;
 	var intCtrlKey = winObj.ctrlKey;
-		
+
 	// --- Access with [ALT/CTRL+Key]
 	if (intCtrlKey) {
-		switch(intKeyCode){
-			
+		switch(intKeyCode){						
 			case(KEY_A):
-				alert('Ctrl + A');
+				var address = TakeURLAddress();
+				alert(address);
 				break;
-			case(KEY_B):
-				alert('Ctrl + B');
+			case(KEY_G):
+				alert('Ctrl + G');
 				break;
 		}
 		// --- Map the keyCode in another keyCode not used
