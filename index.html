@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="style.css" />
     <title>PFA BigData en Neurosciences</title>
 	<SCRIPT LANGUAGE="JavaScript" 	SRC="RaccourciClavier.js"></SCRIPT>
+<script src="CodeMirror-master/lib/codemirror.js"></script>
+<link rel="stylesheet" href="CodeMirror-master/lib/codemirror.css">
+<script src="CodeMirror-master/mode/turtle/turtle.js"></script>
+<script src="CodeMirror-master/addon/hint/show-hint.js"></script>
+<script src="CodeMirror-master/addon/hint/javascript-hint.js"></script>
   </head>
 
   <body>
@@ -21,17 +26,28 @@
       </div>
       <div class="Saisie">
 	<form method="post" action="">
-	  <textarea name="saisie" id="saisie">
+	  
+	      <textarea name="saisie" id="saisie">
 
-	  </textarea><br/>
+	      </textarea><br/>
+	   <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("saisie"), {
+        mode: {name:"turtle", globalVars: true},
+      extraKeys: {"Ctrl-Space": "autocomplete"},
+      lineNumbers: true,
+        matchBrackets: true
+      });
+    </script>
+
 	  <input type="submit" value="Enregistrer" />
 	</form>
       </div>
     </div>
 	
 	<script language="javascript">
-      document.onkeydown = applyKey;
+	  document.onkeydown = applyKey;
     </script>
+
 		
   </body>
 
