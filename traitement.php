@@ -7,8 +7,6 @@
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css" />
     <title>PFA BigData en Neurosciences</title>
-	<SCRIPT LANGUAGE="JavaScript" 	SRC="RaccourciClavier.js"></SCRIPT>
-	<SCRIPT LANGUAGE="JavaScript" 	SRC="FileOpener.js"></SCRIPT>
 <script src="CodeMirror-master/lib/codemirror.js"></script>
 <link rel="stylesheet" href="CodeMirror-master/lib/codemirror.css">
 <link rel="stylesheet" href="CodeMirror-master/addon/hint/show-hint.css">
@@ -20,27 +18,30 @@
   <body>
     <div class="PDFReader">
     <!-- Lecteur PDF -->
-    <iframe class="PDF" src="http://annales.eirb.fr/media/annales/%5BPG202%5D%20Programmation_Orient_e_Objets%20-%20Partiel%20-%202001.pdf"></iframe>
+    <iframe class="PDF" src= "<?php echo $_GET['URL']; ?>"></iframe>
     </div>
     <div class="TurtoiseWriter">
       <!-- Zone de traitement de texte-->
       <div class="Menu">
       </div>
       <div class="Saisie">
-	<form method="post" action="">
+	<form method="post" action="save.php">
 	  
-	      <textarea name="saisie" id="saisie"></textarea><br/>
+	      <textarea name="saisieTexte" id="saisie"></textarea><br/>
 	   <script>
       var editor = CodeMirror.fromTextArea(document.getElementById("saisie"), {
         mode: {name:"turtle", globalVars: true},
-      extraKeys: {"Ctrl-Space": "autocomplete"},
+      extraKeys: {"Ctrl-Space": "autocomplete",
+	              "Ctrl-M":function(editor){alert("Aide: Raccourci clavier Ctrl-Space : Autocompletion Ctrl-N : Sauvegarde   Ctrl-A : Selectionner tout Ctrl-C : Copier Ctrl-V : Coller Ctrl-X : Couper");},
+				  "Ctrl-N":function(editor){}
+				  },
       lineNumbers: true,
       lineWrapping: true,
         matchBrackets: true
       });
-    </script>
-
-	  <input type="submit" value="Enregistrer" />
+	  
+    </script>	
+		<input type="submit" value = "Valider"/>
 	</form>
       </div>
     </div>
