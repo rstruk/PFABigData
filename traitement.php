@@ -25,15 +25,15 @@
       <div class="Menu">
       </div>
       <div class="Saisie">
-	<form method="post" action="save.php">
+	<form method="post" action="">
 	  
-	      <textarea name="saisieTexte" id="saisie"></textarea><br/>
+	      <textarea name="saisieTexte" id="saisie" value ="<?php if(isset($_POST['saisieTexte'])) echo $_POST['saisieTexte'] ?>"></textarea><br/>
 	   <script>
       var editor = CodeMirror.fromTextArea(document.getElementById("saisie"), {
         mode: {name:"turtle", globalVars: true},
       extraKeys: {"Ctrl-Space": "autocomplete",
-	              "Ctrl-M":function(editor){alert("Aide: Raccourci clavier Ctrl-Space : Autocompletion Ctrl-N : Sauvegarde   Ctrl-A : Selectionner tout Ctrl-C : Copier Ctrl-V : Coller Ctrl-X : Couper");},
-				  "Ctrl-N":function(editor){}
+	              "Ctrl-N":function(editor){alert("Aide: Raccourci clavier Ctrl-Space : Autocompletion Ctrl-N : Sauvegarde   Ctrl-A : Selectionner tout Ctrl-C : Copier Ctrl-V : Coller Ctrl-X : Couper");},
+				  "Ctrl-M":function(editor){save();}				 
 				  },
       lineNumbers: true,
       lineWrapping: true,
@@ -41,7 +41,21 @@
       });
 	  
     </script>	
-		<input type="submit" value = "Valider"/>
+	<?php
+	function save(){
+    $save_dir = 'save/';
+    $nomFichier = $_GET['nomFichier'].'.txt';
+	$auteurFichier = $_GET['nomAuteur'];
+	$nomPDF = $_GET['URL'];
+    $fichier = fopen($save_dir.$nomFichier,'a');
+		if(isset($_POST['saisieTexte'])){
+	fputs($fichier, 'Document PDF lié : '.$nomPDF."\r\n");
+    fputs($fichier, 'Auteur du fichier : '.$auteurFichier."\r\n"."\r\n");
+    fputs($fichier, $_POST['saisieTexte']);}
+    fclose($fichier);
+	
+	}?>
+		<input type="submit" value = "Valider" onClick = <?php save(); ?>/>
 	</form>
       </div>
     </div>
