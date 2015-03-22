@@ -26,14 +26,14 @@
       </div>
       <div class="Saisie">
 	<form method="post" action="">
-	  
-	      <textarea name="saisieTexte" id="saisie" value ="<?php if(isset($_POST['saisieTexte'])) echo $_POST['saisieTexte'] ?>"></textarea><br/>
+	  <?php // var_dump($_POST['saisieTexte']);?>
+	      <textarea name="saisieTexte" id="saisie" value = "<?php echo isset($_POST['saisieTexte'])?$_POST['saisieTexte']:''; ?>"></textarea><br/>
 	   <script>
       var editor = CodeMirror.fromTextArea(document.getElementById("saisie"), {
         mode: {name:"turtle", globalVars: true},
       extraKeys: {"Ctrl-Space": "autocomplete",
 	              "Ctrl-N":function(editor){alert("Aide: Raccourci clavier Ctrl-Space : Autocompletion Ctrl-N : Sauvegarde   Ctrl-A : Selectionner tout Ctrl-C : Copier Ctrl-V : Coller Ctrl-X : Couper");},
-				  "Ctrl-M":function(editor){save();}				 
+				  "Ctrl-M":function(editor){<?php save();?> alert("Save");}				 
 				  },
       lineNumbers: true,
       lineWrapping: true,
@@ -43,12 +43,25 @@
     </script>	
 	<?php
 	function save(){
-    $save_dir = 'save/';
-    $nomFichier = $_GET['nomFichier'].'.txt';
+	$subject = $_GET['nomSujet'];
+	$i = 0;
+	$save_dir = 'save/'.$subject;
+	if(!is_dir($save_dir)){mkdir($save_dir,0777,true);}
+    $nomFichier = $_GET['nomFichier'];
+	$extensionFichier = '.txt';
 	$auteurFichier = $_GET['nomAuteur'];
 	$nomPDF = $_GET['URL'];
-    $fichier = fopen($save_dir.$nomFichier,'a');
-		if(isset($_POST['saisieTexte'])){
+	if(!is_file($save_dir.'/'.$nomFichier.$extensionFichier)){
+		$fichier = fopen($save_dir.'/'.$nomFichier.$extensionFichier,'a');}
+	else{
+		$i = 1;
+		while(is_file($save_dir.'/'.$nomFichier.'('.$i.')'.$extensionFichier)){
+		$i=$i+1;
+		}
+		$fichier = fopen($save_dir.'/'.$nomFichier.'('.$i.')'.$extensionFichier,'a');
+	}
+	if(isset($_POST['saisieTexte'])){
+	fputs($fichier, 'Version du fichier :'.$i. "\r\n" );	
 	fputs($fichier, 'Document PDF lié : '.$nomPDF."\r\n");
     fputs($fichier, 'Auteur du fichier : '.$auteurFichier."\r\n"."\r\n");
     fputs($fichier, $_POST['saisieTexte']);}
