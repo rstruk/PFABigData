@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 
 
 <html>
@@ -6,28 +7,20 @@
   <head>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css" />
-    <title>PFA BigData en Neurosciences</title>
+    <title>Accueil - PFA BigData en Neurosciences</title>
   </head>
 
-  <body>
-    <div class="PDFReader">
-    <!-- Lecteur PDF -->
-    <iframe class="PDF" src="../Combinatoire/tp_tsp.pdf"></iframe>
-    </div>
-    <div class="TurtoiseWriter">
-      <!-- Zone de traitement de texte-->
-      <div class="Menu">
-	Blah
-      </div>
-      <div class="Saisie">
-	<form method="post" action="">
-	  <textarea name="saisie" id="saisie">
-
-	  </textarea><br/>
-	  <input type="submit" value="Enregistrer" />
+  <body> 
+	<form method = "get" action = "traitement.php">
+	<p>
+		URL du document a traiter       <input type="text" name="URL" size = "180"/><br/>
+		Nom du fichier d'ontologie crée <input type = "text" name = "nomFichier" size = "40" /><br/>
+		Nom de l'auteur                 <input type = "text" name = "nomAuteur" size = "40"/><br/>
+		Sujet de l'article              <input type = "text" name = "nomSujet" size = "40" /><br/>
+		<input type = "submit" value = "Validez et acceder a l'editeur"/><br/>	
+	</p>
 	</form>
-      </div>
-    </div>
+	<!--<a href="index.php?URL=">Acces a l'editeur !</a> -->
   </body>
 
 </html>
