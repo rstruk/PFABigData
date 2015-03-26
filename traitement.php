@@ -19,9 +19,9 @@ function save(){
     	$fichier = fopen($save_dir.'/'.$nomFichier.' ('.$i.')'.$extensionFichier, 'a');
     }
     if(isset($_POST['saisieTexte'])) {
-        fputs($fichier, 'Version du fichier :'.$i. "\r\n" );	
-        fputs($fichier, 'Document PDF lié : '.$nomPDF."\r\n");
-        fputs($fichier, 'Auteur du fichier : '.$auteurFichier."\r\n"."\r\n");
+        fputs($fichier, 'Version du fichier :'.$i. "\n" );	
+        fputs($fichier, 'Document PDF lié : '.$nomPDF."\n");
+        fputs($fichier, 'Auteur du fichier : '.$auteurFichier."\n\n");
         fputs($fichier, $_POST['text']);
     }
     fclose($fichier);
