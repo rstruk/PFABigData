@@ -13,6 +13,7 @@
             var turtleApp = angular.module('turtleApp', [ 'ngRoute' ]);
             turtleApp.value('file', {
                     pdfUrl: null,
+                    filename: null,
                     author: null,
                     topic: null,
             });
@@ -26,7 +27,10 @@
             );
             turtleApp.controller('EditorCtrl',
                 function($scope, $location, file) {
-                    if (file.pdfUrl === null)
+                    if (file.pdfUrl === null ||
+                        file.filename === null ||
+                        file.author === null ||
+                        file.topic === null)
                         return $location.url('/loader');
                     $scope.file = file;
                 }

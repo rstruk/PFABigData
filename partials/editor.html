@@ -1,1 +1,33 @@
-<iframe  ng-src="{{ pdfUrl }}"></iframe>
+<iframe  ng-src="{{ file.pdfUrl }}"></iframe>
+<textarea name="saisieTexte" id="saisie" value = ""></textarea>
+<script>
+    var editor = CodeMirror.fromTextArea(
+        document.getElementById("saisie"),
+        {
+            mode: {
+                name:'turtle',
+                globalVars: true
+            },
+            extraKeys: {
+                'Ctrl-Space': 'autocomplete',
+                'Ctrl-N': function(editor) {
+                    alert(
+                        'Aide : Raccourci clavier\n' +
+                        'Ctrl-Space : Autocompletion\n' +
+                        'Ctrl-M : Sauvegarde\n' +
+                        'Ctrl-A : Selectionner tout\n' +
+                        'Ctrl-C : Copier\n' +
+                        'Ctrl-V : Coller\n' +
+                        'Ctrl-X : Couper'
+                    );
+                },
+                'Ctrl-M': function(editor) {
+                    // TODO save with PHP
+                }
+            },
+            lineNumbers: true,
+            lineWrapping: true,
+            matchBrackets: true
+        }
+    );
+</script>
