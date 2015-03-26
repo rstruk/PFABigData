@@ -16,13 +16,14 @@
                     filename: null,
                     author: null,
                     topic: null,
+                    text: null,
             });
             turtleApp.controller('LoaderCtrl',
                 function($scope, $location, file) {
                     $scope.file = file;
                     $scope.loadEditor = function() {
                         $location.url('/editor');
-                    }
+                    };
                 }
             );
             turtleApp.controller('EditorCtrl',

@@ -1,8 +1,8 @@
 <iframe  ng-src="{{ file.pdfUrl }}"></iframe>
-<textarea name="saisieTexte" id="saisie" value = ""></textarea>
+<textarea id="text" ng-model="file.text"></textarea>
 <script>
     var editor = CodeMirror.fromTextArea(
-        document.getElementById("saisie"),
+        document.getElementById("text"),
         {
             mode: {
                 name:'turtle',
