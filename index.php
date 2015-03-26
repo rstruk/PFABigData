@@ -6,7 +6,16 @@
         <base href="/work/eirb/PFABigData/">
         <link rel="stylesheet" href="CodeMirror-master/lib/codemirror.css">
         <link rel="stylesheet" href="CodeMirror-master/addon/hint/show-hint.css">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <style>
+            body {
+                background-color: #f5f5f5;
+            }
+        </style>
+        <script src="CodeMirror-master/lib/codemirror.js"></script>
+        <script src="CodeMirror-master/addon/hint/show-hint.js"></script>
+        <script src="CodeMirror-master/addon/hint/anyword-hint.js"></script>
+        <script src="CodeMirror-master/mode/turtle/turtle.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
         <script>
@@ -53,10 +62,6 @@
                 }
             ]);
         </script>
-        <script src="CodeMirror-master/lib/codemirror.js"></script>
-        <script src="CodeMirror-master/addon/hint/show-hint.js"></script>
-        <script src="CodeMirror-master/addon/hint/anyword-hint.js"></script>
-        <script src="CodeMirror-master/mode/turtle/turtle.js"></script>
     </head>
     <body>
         <div ng-view></div>
