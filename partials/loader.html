@@ -1,0 +1,20 @@
+<form ng-submit="loadEditor()">
+    <label>
+        URL du document a traiter
+        <input type="text" ng-model="file.pdfUrl">
+    </label>
+    <label>
+        Nom du fichier d'ontologie créé
+        <input type="text" ng-model="file.filename">
+    </label>
+    <label>
+        Nom de l'auteur
+        <input type="text" ng-model="file.author">
+    </label>
+    <label>
+        Sujet de l'article
+        <input type="text" ng-modeml="file.topic">
+    </label>
+    <button type="submit">Editer</button>
+    <a href="editor">editor</a>
+</form>

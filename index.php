@@ -1,26 +1,59 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-
-
-<html>
-
-  <head>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" href="style.css" />
-    <title>Accueil - PFA BigData en Neurosciences</title>
-  </head>
-
-  <body> 
-	<form method = "get" action = "traitement.php">
-	<p>
-		URL du document a traiter       <input type="text" name="URL" size = "180"/><br/>
-		Nom du fichier d'ontologie crée <input type = "text" name = "nomFichier" size = "40" /><br/>
-		Nom de l'auteur                 <input type = "text" name = "nomAuteur" size = "40"/><br/>
-		Sujet de l'article              <input type = "text" name = "nomSujet" size = "40" /><br/>
-		<input type = "submit" value = "Validez et acceder a l'editeur"/><br/>	
-	</p>
-	</form>
-	<!--<a href="index.php?URL=">Acces a l'editeur !</a> -->
-  </body>
-
+<html lang="fr" ng-app="turtleApp">
+    <head>
+        <meta charset="utf-8">
+        <title>Turtle</title>
+        <base href="/work/eirb/PFABigData/">
+        <link rel="stylesheet" href="CodeMirror-master/lib/codemirror.css">
+        <link rel="stylesheet" href="CodeMirror-master/addon/hint/show-hint.css">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+        <script>
+            var turtleApp = angular.module('turtleApp', [ 'ngRoute' ]);
+            turtleApp.value('file', {
+                    pdfUrl: null,
+                    author: null,
+                    topic: null,
+            });
+            turtleApp.controller('LoaderCtrl',
+                function($scope, $location, file) {
+                    $scope.file = file;
+                    $scope.loadEditor = function() {
+                        $location.url('/editor');
+                    }
+                }
+            );
+            turtleApp.controller('EditorCtrl',
+                function($scope, $location, file) {
+                    if (file.pdfUrl === null)
+                        return $location.url('/loader');
+                    $scope.file = file;
+                }
+            );
+            turtleApp.config([ '$routeProvider', '$locationProvider',
+                function($routeProvider, $locationProvider) {
+                    $routeProvider.
+                        when('/loader', {
+                            templateUrl: 'partials/loader.html',
+                            controller: 'LoaderCtrl',
+                        }).
+                        when('/editor', {
+                            templateUrl: 'partials/editor.html',
+                            controller: 'EditorCtrl',
+                        }).
+                        otherwise({
+                            redirectTo: '/loader',
+                        });
+                }
+            ]);
+        </script>
+        <script src="CodeMirror-master/lib/codemirror.js"></script>
+        <script src="CodeMirror-master/addon/hint/show-hint.js"></script>
+        <script src="CodeMirror-master/addon/hint/anyword-hint.js"></script>
+        <script src="CodeMirror-master/mode/turtle/turtle.js"></script>
+    </head>
+    <body>
+        <div ng-view></div>
+    </body>
 </html>
