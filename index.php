@@ -8,8 +8,26 @@
         <link rel="stylesheet" href="CodeMirror-master/addon/hint/show-hint.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <style>
-            body {
-                background-color: #f5f5f5;
+            .CodeMirror {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 50%;
+            }
+            .PDF {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 50%;
+            }
+            .PDF iframe {
+                border: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
             }
         </style>
         <script src="CodeMirror-master/lib/codemirror.js"></script>
@@ -30,7 +48,8 @@
             turtleApp.controller('LoaderCtrl',
                 function($scope, $location, file) {
                     $scope.file = file;
-                    $scope.loadEditor = function() {
+                    $scope.loadEditor = function(file) {
+                        $scope.file = file;
                         $location.url('/editor');
                     };
                 }
@@ -43,6 +62,35 @@
                         file.topic === null)
                         return $location.url('/loader');
                     $scope.file = file;
+                    CodeMirror.fromTextArea(
+                        document.getElementById("text"),
+                        {
+                            mode: {
+                                name: 'turtle',
+                                globalVars: true
+                            },
+                            extraKeys: {
+                                'Ctrl-Space': 'autocomplete',
+                                'Ctrl-N': function(editor) {
+                                    alert(
+                                        'Aide : Raccourci clavier\n' +
+                                        'Ctrl-Space : Autocompletion\n' +
+                                        'Ctrl-M : Sauvegarde\n' +
+                                        'Ctrl-A : Selectionner tout\n' +
+                                        'Ctrl-C : Copier\n' +
+                                        'Ctrl-V : Coller\n' +
+                                        'Ctrl-X : Couper'
+                                    );
+                                },
+                                'Ctrl-M': function(editor) {
+                                    // TODO save with PHP
+                                }
+                            },
+                            lineNumbers: true,
+                            lineWrapping: true,
+                            matchBrackets: true
+                        }
+                    );
                 }
             );
             turtleApp.config([ '$routeProvider', '$locationProvider',
