@@ -30,8 +30,8 @@ function load($file) {
     $path = SAVE_DIR . '/' . $file->topic . '/' . $file->filename;
     if (!is_file($path)) {
         $file->text =
-            'PDF : ' . $file->pdfUrl . "\n" .
-            'Auteur : ' . $file->author . "\n\n";
+            '# PDF : ' . $file->pdfUrl . "\n" .
+            '# Auteur : ' . $file->author . "\n\n";
         save($file);
     }
     header('Content-type: text/plain');
