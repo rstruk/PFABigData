@@ -35,7 +35,10 @@ function load($file) {
 }
 
 function save($file) {
-    $path = SAVE_DIR . '/' . $file->topic . '/' . $file->filename;
+    $topicPath = SAVE_DIR . '/' . $file->topic;
+    if (!is_dir($topicPath))
+        mkdir($topicPath);
+    $path = $topicPath . '/' . $file->filename;
     if (is_file($path))
         $text = $file->text;
     else
