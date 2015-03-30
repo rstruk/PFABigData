@@ -28,8 +28,12 @@ function existing() {
 
 function load($file) {
     $path = SAVE_DIR . '/' . $file->topic . '/' . $file->filename;
-    if (!is_file($path))
-        return header('HTTP/1.1 404 Not Found');
+    if (!is_file($path)) {
+        $file->text =
+            'PDF : ' . $file->pdfUrl . "\n" .
+            'Auteur : ' . $file->author . "\n\n";
+        save($file);
+    }
     header('Content-type: text/plain');
     echo file_get_contents($path);
 }
@@ -39,15 +43,7 @@ function save($file) {
     if (!is_dir($topicPath))
         mkdir($topicPath);
     $path = $topicPath . '/' . $file->filename;
-    if (is_file($path))
-        $text = $file->text;
-    else
-        $text =
-            'PDF : ' . $file->pdfUrl . "\n" .
-            'Auteur : ' . $file->author . "\n" .
-            "\n" .
-            $file->text;
-    if (!file_put_contents($path, $text))
+    if (!file_put_contents($path, $file->text))
         header('HTTP/1.1 500 Internal Server Error');
 }
 
