@@ -83,6 +83,7 @@
                                             'Aide : Raccourci clavier\n' +
                                             'Ctrl-Space : Autocompletion\n' +
                                             'Ctrl-M : Sauvegarde\n' +
+                                            'Ctrl-E : Télécharger\n' +
                                             'Ctrl-A : Selectionner tout\n' +
                                             'Ctrl-C : Copier\n' +
                                             'Ctrl-V : Coller\n' +
@@ -91,6 +92,13 @@
                                     },
                                     'Ctrl-M': function(editor) {
                                         $http.post('api/?save', angular.extend({ text: editor.getValue() }, file));
+                                    },
+                                    'Ctrl-E': function(editor) {
+                                        $http.post('api/?save', angular.extend({ text: editor.getValue() }, file));
+                                        var a = document.createElement('a');
+                                        a.download = file.topic + ' - ' + file.filename;
+                                        a.href = 'data:text/plain;base64,' + btoa(editor.getValue());
+                                        a.click();
                                     }
                                 },
                                 lineNumbers: true,
