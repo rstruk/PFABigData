@@ -1,28 +1,64 @@
 <?php
 
-function save(){
-    $subject = $_GET['topic'];
-    $i = 0;
-    $save_dir = 'save/'.$subject;
-    if(!is_dir($save_dir))
-        mkdir($save_dir, 0777, true);
-    $nomFichier = $_GET['filename'];
-    $extensionFichier = '.txt';
-    $auteurFichier = $_POST['author'];
-    $nomPDF = $_POST['pdfUrl'];
-    if(!is_file($save_dir.'/'.$nomFichier.$extensionFichier))
-    	$fichier = fopen($save_dir.'/'.$nomFichier.$extensionFichier, 'a');
-    else {
-    	$i = 1;
-    	while (is_file($save_dir.'/'.$nomFichier.' ('.$i.')'.$extensionFichier))
-        	$i=$i+1;
-    	$fichier = fopen($save_dir.'/'.$nomFichier.' ('.$i.')'.$extensionFichier, 'a');
+const SAVE_DIR = '../save';
+const EXT = '.txt';
+
+function existing() {
+    header('Content-type: text/json');
+    $files = [];
+    foreach (scandir(SAVE_DIR) as $topic) {
+        $topicPath = SAVE_DIR . '/' . $topic;
+        if ($topic[0] === '.' || !is_dir($topicPath))
+            continue;
+        foreach (scandir($topicPath) as $article) {
+            $articlePath = $topicPath . '/' . $article;
+            if ($article[0] === '.' || !is_file($articlePath))
+                continue;
+            $contents = file($articlePath);
+            $files[] = [
+                'pdfUrl' => trim(explode(':', $contents[0], 2)[1]),
+                'filename' => $article,
+                'author' => trim(explode(':', $contents[1])[1]),
+                'topic' => $topic
+            ];
+        }
     }
-    if(isset($_POST['saisieTexte'])) {
-        fputs($fichier, 'Version du fichier :'.$i. "\n" );	
-        fputs($fichier, 'Document PDF lié : '.$nomPDF."\n");
-        fputs($fichier, 'Auteur du fichier : '.$auteurFichier."\n\n");
-        fputs($fichier, $_POST['text']);
-    }
-    fclose($fichier);
+    echo json_encode($files);
+}
+
+function load($file) {
+    $path = SAVE_DIR . '/' . $file->topic . '/' . $file->filename;
+    if (!is_file($path))
+        return header('HTTP/1.1 404 Not Found');
+    header('Content-type: text/plain');
+    echo file_get_contents($path);
+}
+
+function save($file) {
+    $path = SAVE_DIR . '/' . $file->topic . '/' . $file->filename;
+    if (is_file($path))
+        $text = $file->text;
+    else
+        $text =
+            'PDF : ' . $file->pdfUrl . "\n" .
+            'Auteur : ' . $file->author . "\n" .
+            "\n" .
+            $file->text;
+    if (!file_put_contents($path, $text))
+        header('HTTP/1.1 500 Internal Server Error');
+}
+
+$input = json_decode(file_get_contents('php://input'));
+switch ($_SERVER['QUERY_STRING']) {
+    case 'existing':
+        existing();
+        break;
+    case 'load':
+        load($input);
+        break;
+    case 'save':
+        save($input);
+        break;
+    default:
+        header('HTTP/1.1 400 Bad Request');
 }

@@ -43,54 +43,63 @@
                     filename: null,
                     author: null,
                     topic: null,
-                    text: null,
             });
             turtleApp.controller('LoaderCtrl',
-                function($scope, $location, file) {
+                function($scope, $location, $http, file) {
                     $scope.file = file;
                     $scope.loadEditor = function(file) {
-                        $scope.file = file;
+                        angular.extend($scope.file, file);
                         $location.url('/editor');
                     };
+                    $http.get('api/?existing').success(function(data) {
+                        $scope.existing = data;
+                    });
                 }
             );
             turtleApp.controller('EditorCtrl',
-                function($scope, $location, file) {
+                function($scope, $location, $http, $sce, file) {
                     if (file.pdfUrl === null ||
                         file.filename === null ||
                         file.author === null ||
                         file.topic === null)
                         return $location.url('/loader');
                     $scope.file = file;
-                    CodeMirror.fromTextArea(
-                        document.getElementById("text"),
-                        {
-                            mode: {
-                                name: 'turtle',
-                                globalVars: true
-                            },
-                            extraKeys: {
-                                'Ctrl-Space': 'autocomplete',
-                                'Ctrl-N': function(editor) {
-                                    alert(
-                                        'Aide : Raccourci clavier\n' +
-                                        'Ctrl-Space : Autocompletion\n' +
-                                        'Ctrl-M : Sauvegarde\n' +
-                                        'Ctrl-A : Selectionner tout\n' +
-                                        'Ctrl-C : Copier\n' +
-                                        'Ctrl-V : Coller\n' +
-                                        'Ctrl-X : Couper'
-                                    );
+                    var iframe = document.createElement('iframe');
+                    iframe.src = file.pdfUrl;
+                    document.getElementsByClassName('PDF')[0].appendChild(iframe);
+                    $http.post('api/?load', file).success(function(data) {
+                        var textarea = document.getElementById("text");
+                        textarea.value = data;
+                        CodeMirror.fromTextArea(
+                            textarea,
+                            {
+                                mode: {
+                                    name: 'turtle',
+                                    globalVars: true
                                 },
-                                'Ctrl-M': function(editor) {
-                                    // TODO save with PHP
-                                }
-                            },
-                            lineNumbers: true,
-                            lineWrapping: true,
-                            matchBrackets: true
-                        }
-                    );
+                                extraKeys: {
+                                    'Ctrl-Space': 'autocomplete',
+                                    'Ctrl-N': function(editor) {
+                                        alert(
+                                            'Aide : Raccourci clavier\n' +
+                                            'Ctrl-Space : Autocompletion\n' +
+                                            'Ctrl-M : Sauvegarde\n' +
+                                            'Ctrl-A : Selectionner tout\n' +
+                                            'Ctrl-C : Copier\n' +
+                                            'Ctrl-V : Coller\n' +
+                                            'Ctrl-X : Couper'
+                                        );
+                                    },
+                                    'Ctrl-M': function(editor) {
+                                        $http.post('api/?save', angular.extend({ text: editor.getValue() }, file));
+                                    }
+                                },
+                                lineNumbers: true,
+                                lineWrapping: true,
+                                matchBrackets: true
+                            }
+                        );
+                    });
                 }
             );
             turtleApp.config([ '$routeProvider', '$locationProvider',

@@ -5,7 +5,7 @@
             <h2 class="page-header">Créer un nouveau fichier Turtle</h2>
             <form ng-submit="loadEditor(file)">
                 <div class="form-group">
-                    <label>PDF à afficher</label>
+                    <label>URL du PDF à afficher</label>
                     <input type="text" ng-model="file.pdfUrl" class="form-control">
                 </div>
                 <hr>
@@ -29,7 +29,8 @@
             <h2 class="page-header">Charger un fichier existant</h2>
             <ul class="nav nav-pills nav-stacked">
                 <li ng-repeat="file in existing"><a href ng-click="loadEditor(file)">{{ file.topic }} / {{ file.filename }}</a></li>
-                <li ng-hide="existing.length">Aucun fichier Turtle trouvé sur le serveur.</li>
+                <li ng-show="existing && !existing.length">Aucun fichier Turtle trouvé sur le serveur.</li>
+                <li ng-hide="existing">Chargement...</li>
             </ul>
         </div>
     </div>
